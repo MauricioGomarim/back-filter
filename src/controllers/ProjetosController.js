@@ -20,7 +20,9 @@ class ProjetosController {
   async delete(request, response) {
     const { id } = request.params;
 
-    return response.json();
+    const deleted = await knex("projetos").where({ id }).del();
+
+    return response.json(deleted);
   }
 
   async index(request, response) {

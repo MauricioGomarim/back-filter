@@ -7,12 +7,14 @@ const AppError = require("./utils/AppError");
 const database = require("./database/sqlite");
 const cors = require("cors");
 
-app.use(
-  cors({
-    origin: ["https://filter-an7.vercel.app"],
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: "https://filter-an7.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 

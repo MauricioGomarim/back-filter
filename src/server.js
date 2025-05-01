@@ -1,11 +1,12 @@
 require("dotenv/config");
 require("express-async-errors");
 const express = require("express");
+const cors = require("cors");
+
 const app = express();
 const routes = require("./routes");
 const AppError = require("./utils/AppError");
 const database = require("./database/sqlite");
-const cors = require("cors");
 
 const corsOptions = {
   origin: "https://filter-an7.vercel.app",
@@ -15,11 +16,17 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); 
+
 
 app.use(express.json());
 
-app.use(routes);
+
 database();
+
+
+app.use(routes);
+
 
 app.use((error, request, response, next) => {
   if (error instanceof AppError) {
@@ -36,6 +43,7 @@ app.use((error, request, response, next) => {
     message: "Internal server error",
   });
 });
+
 
 const PORT = process.env.PORT || 3333;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
